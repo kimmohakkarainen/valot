@@ -15,5 +15,5 @@ export function fetchState() {
 }
 
 export function postState(params) {
-  return client.get("/rest/state", params);
+  return client.post("/rest/state", params);
 }

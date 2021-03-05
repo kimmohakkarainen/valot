@@ -7,11 +7,8 @@ import {
   NavDropdown,
   MenuItem
 } from "react-bootstrap";
-import { IndexLinkContainer } from "react-router-bootstrap";
 
 function Menu({ personName, role }) {
-  console.log("Menu " + personName + " " + role);
-
   return (
     <Container>
       <Navbar

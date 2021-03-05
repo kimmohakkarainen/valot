@@ -2,7 +2,7 @@ import { uniqueId } from "../actions";
 
 export default function poriState(
   state = {
-    pressed: 1
+    state: []
   },
   action
 ) {

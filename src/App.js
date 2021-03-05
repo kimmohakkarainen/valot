@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { Modal } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 
 import { fetchState, postState } from "./actions";
 
@@ -13,9 +13,24 @@ function App({ fetchState, postState, state }) {
     fetchState();
   }, [fetchState]);
 
+  console.log(state);
+
+  const buttons = state.state;
+
   return (
     <div className="App">
       <Menu />
+      <Container>
+        <Row>
+          {buttons.map((button) => {
+            return (
+              <Col xs={12} md={6}>
+                <Button>{button.name}</Button>
+              </Col>
+            );
+          })}
+        </Row>
+      </Container>
     </div>
   );
 }
