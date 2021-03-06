@@ -1,7 +1,6 @@
 import * as api from "../api";
 
 export function fetchState() {
-  console.log("fetchState()");
   return (dispatch) => {
     api
       .fetchState()
@@ -15,8 +14,6 @@ export function fetchState() {
 }
 
 export function postState(params) {
-  console.log("postState()");
-  console.log(params);
   return (dispatch) => {
     api
       .postState(params)
@@ -30,7 +27,6 @@ export function postState(params) {
 }
 
 export function fetchStateSucceeded(data) {
-  console.log("fetchStateSucceeded " + data);
   return {
     type: "FETCH_STATE_SUCCEEDED",
     payload: {

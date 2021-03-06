@@ -7,13 +7,10 @@ import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 
-import Promise from "core-js/features/promise";
-import Object from "core-js/features/object";
-
-import poriState from "./reducers";
+import valoState from "./reducers";
 
 const store = createStore(
-  poriState,
+  valoState,
   composeWithDevTools(applyMiddleware(thunk))
   /* applyMiddleware(thunk) */
 );

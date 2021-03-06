@@ -1,6 +1,4 @@
-import { uniqueId } from "../actions";
-
-export default function poriState(
+export default function valoState(
   state = {
     state: []
   },

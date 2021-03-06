@@ -14,8 +14,6 @@ function App({ fetchState, postState, state }) {
   }, [fetchState]);
 
   function handleClick(button) {
-    console.log("handleClick");
-    console.log(button);
     postState(button);
   }
 
