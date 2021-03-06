@@ -14,6 +14,21 @@ export function fetchState() {
   };
 }
 
+export function postState(params) {
+  console.log("postState()");
+  console.log(params);
+  return (dispatch) => {
+    api
+      .postState(params)
+      .then((resp) => {
+        dispatch(fetchStateSucceeded(resp.data));
+      })
+      .catch((error) => {
+        dispatch(fetchError("Yhteysongelma"));
+      });
+  };
+}
+
 export function fetchStateSucceeded(data) {
   console.log("fetchStateSucceeded " + data);
   return {
