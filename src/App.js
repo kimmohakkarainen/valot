@@ -2,50 +2,109 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { Container, Row, Col, Button, CardDeck, Card } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  CardDeck,
+  Card,
+  Modal
+} from "react-bootstrap";
 
-import { fetchState, postState } from "./actions";
+import { fetchState, postState, postColor } from "./actions";
+import EditModal from "./editmodal";
 
 import Menu from "./menu";
 
-function App({ fetchState, postState, state }) {
+function App({ fetchState, postState, postColor, state }) {
+  const [modifyColor, setModifyColor] = useState(null);
+  const [deleteColor, setDeleteColor] = useState(null);
+  const [createColor, setCreateColor] = useState(false);
+
   useEffect(() => {
     fetchState();
   }, [fetchState]);
 
+  useEffect(() => {
+    setModifyColor(null);
+    setDeleteColor(null);
+    setCreateColor(false);
+  }, [state]);
+
   function handleClick(button) {
-    postState(button);
+    console.log(button.active);
+    if (button.active) {
+      setModifyColor(button);
+    } else {
+      postState(button);
+    }
   }
 
-  const buttons = state.state;
+  function handleSave(color) {
+    console.log("handledSave()");
+    console.log(color);
+    postColor(color);
+  }
+
+  const colors = state.state;
 
   return (
     <div className="App">
       <Menu />
-      {buttons.map((button) => {
-        const bg = button.active ? "danger" : "ligt";
-        const text = button.active ? "white" : "dark";
+
+      {modifyColor != null && (
+        <Modal show={true} onHide={() => {}}>
+          <Modal.Header>Edit Vacation</Modal.Header>
+          <EditModal
+            color={modifyColor}
+            onSave={handleSave}
+            onClose={() => {
+              setModifyColor();
+            }}
+          />
+        </Modal>
+      )}
+
+      {createColor && (
+        <Modal show={true} onHide={() => {}}>
+          <Modal.Header>Add New Vacation</Modal.Header>
+          <EditModal
+            color={{ name: "uusi", text: "", red: 0, green: 0, blue: 0 }}
+            onSave={handleSave}
+            onClose={() => {
+              setCreateColor(false);
+            }}
+          />
+        </Modal>
+      )}
+
+      {colors.map((color) => {
+        const bg = color.active ? "danger" : "ligt";
+        const text = color.active ? "white" : "dark";
 
         return (
           <Card
             bg={bg}
             text={text}
             style={{ margin: "1rem" }}
-            variant={button.variant}
+            variant={color.variant}
             className="text-center"
-            key={button.id}
+            key={color.id}
+            onClick={() => handleClick(color)}
           >
-            <Card.Header>{button.name}</Card.Header>
+            <Card.Header>
+              <h1>{color.name}</h1>
+            </Card.Header>
             <Card.Body>
-              <Card.Text>{button.text}</Card.Text>
-              <Button variant="primary" onClick={() => handleClick(button)}>
-                SELECT
-              </Button>
+              <Card.Text>{color.text}</Card.Text>
             </Card.Body>
-            <Card.Footer className="text-muted">{button.footer}</Card.Footer>
           </Card>
         );
       })}
+      <Card body>
+        <Button onClick={() => setCreateColor(true)}>Add</Button>
+      </Card>
     </div>
   );
 }
@@ -59,7 +118,8 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchState: () => dispatch(fetchState()),
-    postState: (params) => dispatch(postState(params))
+    postState: (params) => dispatch(postState(params)),
+    postColor: (params) => dispatch(postColor(params))
   };
 };
 

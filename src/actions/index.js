@@ -26,6 +26,19 @@ export function postState(params) {
   };
 }
 
+export function postColor(params) {
+  return (dispatch) => {
+    api
+      .postColor(params)
+      .then((resp) => {
+        dispatch(fetchStateSucceeded(resp.data));
+      })
+      .catch((error) => {
+        dispatch(fetchError("Yhteysongelma"));
+      });
+  };
+}
+
 export function fetchStateSucceeded(data) {
   return {
     type: "FETCH_STATE_SUCCEEDED",

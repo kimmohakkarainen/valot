@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API_BASE_URL = "";
-/* const API_BASE_URL = "http://localhost:8080";  */
+/* const API_BASE_URL = ""; */
+const API_BASE_URL = "http://localhost:8080";
 /* const API_BASE_URL = "http://192.168.255.32:8080"; */
 
 const client = axios.create({
@@ -17,4 +17,8 @@ export function fetchState() {
 
 export function postState(params) {
   return client.post("/rest/state", params);
+}
+
+export function postColor(params) {
+  return client.post("/rest/color", params);
 }

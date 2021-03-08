@@ -5,19 +5,18 @@ import {
   Navbar,
   NavItem,
   NavDropdown,
-  MenuItem
+  MenuItem,
+  Form,
+  FormControl,
+  FormLabel,
+  FormGroup,
+  Button
 } from "react-bootstrap";
 
 function Menu({ personName, role }) {
   return (
     <Navbar sticky="top" collapseOnSelect bg="dark" variant="dark">
       <Navbar.Brand>Valot</Navbar.Brand>
-      <Navbar.Toggle />
-      <Navbar.Collapse>
-        <Nav className="mr-auto">
-          <Nav.Link href="/">asetukset</Nav.Link>
-        </Nav>
-      </Navbar.Collapse>
     </Navbar>
   );
 }
