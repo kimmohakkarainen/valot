@@ -38,16 +38,18 @@ class OwnRequestHandled(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         print(self.requestline)
+        content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
+        post_data = self.rfile.read(content_length) # <--- Gets the data itself
+        data = json.loads(post_data.decode('utf-8'))
         if self.path == '/rest/state':
-            content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
-            post_data = self.rfile.read(content_length) # <--- Gets the data itself
-            selected = json.loads(post_data.decode('utf-8'))
-            valothread.changeState(selected)
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-            self.wfile.write(valothread.getStateJSON())
-            self.wfile.flush()
+            valothread.changeState(data)
+        elif self.path == '/rest/color':
+            valothread.changeColor(data)
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+        self.wfile.write(valothread.getStateJSON())
+        self.wfile.flush()
 
 
     def do_OPTIONS(self):

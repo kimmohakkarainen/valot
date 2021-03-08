@@ -24,6 +24,15 @@ class ValoThread(Thread):
         self.condition.release()
 
 
+    def changeColor(self, data):
+        self.model.changeColor(data)
+        self.condition.acquire()
+        self.index = data['id']
+        self.changed = True
+        self.condition.notify()
+        self.condition.release()
+
+
     def getStateJSON(self):
         return self.model.modelToJSON(self.index)
 
@@ -41,4 +50,4 @@ class ValoThread(Thread):
                 self.changed = False
             self.condition.release()
             print(index)
-            self.leddriver.selectEffect(index)
+            self.leddriver.selectColor(self.model.getColor(index))

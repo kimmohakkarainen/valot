@@ -1,34 +1,46 @@
 import json
 
-definitions = [
-    ['OFF', 'pois päältä', 'off'],
-    ['Kirkas', 'kirkas valaistus', 'kirkas'],
-    ['keski', 'keskiteho', ''],
-    ['himmeä', 'himmeä valaistus', ''],
-    ['white', 'Faint red color', ''],
-    ['changing', 'Faint red color', ''],
-    ['blink', 'Faint red color', ''],
-]
-
-
-def createButton(id, name, text, footer, variant='primary'):
-    retval = dict();
-    retval['id'] = id
-    retval['variant'] = variant
-    retval['text'] = text
-    retval['footer'] = footer
-    retval['name'] = name
-    retval['active'] = False
-    return retval
 
 class ValoModel():
 
     model = []
+    definitionsFile = 'definitions.json'
 
     def __init__(self):
-        for index, value in enumerate(definitions):
-            name, text, footer = value
-            self.model.append(createButton(index, name, text,footer))
+        self.readModelFromDisk()
+
+
+    def writeModelToDisk(self):
+        with open(self.definitionsFile,'wb') as file:
+            file.write(json.dumps(self.model).encode('utf-8'))
+
+
+    def readModelFromDisk(self):
+        with open(self.definitionsFile, 'rb') as file:
+            data = file.read()
+            self.model = json.loads(data.decode('utf-8'))
+
+    def changeColor(self, color):
+        print('changeColor')
+        print(color)
+        id = color['id'] if 'id' in color else 0
+        if id == 0:
+            color['id'] = len(self.model)
+            self.model.append(color)
+        elif 0 <= id < len(self.model):
+            self.model[id] = color
+        else:
+            print('id out of range ' + id)
+        self.writeModelToDisk()
+
+
+    def getColor(self, index):
+        if index > 0 and index < len(self.model):
+            row = self.model[index]
+            return (row['bright'], row['blue'], row['green'], row['red'])
+        else:
+            return (255, 0, 0, 0)
+
 
 
     def modelToJSON(self, index):
